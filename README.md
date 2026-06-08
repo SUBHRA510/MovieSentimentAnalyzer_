@@ -1,4 +1,43 @@
-import os
+## Movie Review Sentiment Analysis 🎬 | NLP + Tkinter + Sklearn
+
+## 1. Problem Statement
+Movie production houses and streaming platforms like Netflix, Stan, and Disney+ AU receive thousands of user reviews daily. Manually reading each review to gauge audience sentiment is time-consuming and not scalable. 
+
+**Goal**: Build an automated system that classifies a movie review as `Positive` or `Negative` in real-time, so studios can quickly measure public reaction after a release.
+
+## 2. Dataset
+- **Source**: `movie_reviews.csv` - Custom dataset of movie reviews
+- **Size**: N rows with 2 columns: `review` (text) and `sentiment` (label)
+- **Location**: Stored locally at `C:/Users/Subhra/OneDrive/Desktop/python opencv/movie_reviews.csv`
+- **Note**: For production, this would connect to IMDB/Twitter API or AWS S3.
+
+## 3. Tech Stack & Methodology
+| **Component** | **Technology Used** | **Why** |
+| --- | --- | --- |
+| **Data Handling** | `Pandas` | Industry standard for CSV processing |
+| **ML Pipeline** | `Scikit-learn Pipeline` | Combines vectorization + model for clean code & deployment |
+| **Text Vectorization** | `CountVectorizer + TfidfTransformer` | Converts text to numerical features. TF-IDF weights rare words higher |
+| **Model** | `Multinomial Naive Bayes` | Fast, works well for text classification, baseline for NLP tasks |
+| **GUI** | `Tkinter` | Lightweight Python GUI. No web server needed for demo |
+| **Validation** | `train_test_split` | 80-20 split with `random_state=42` for reproducibility |
+
+**ML Pipeline Flow**:
+`Raw Text → CountVectorizer → TF-IDF → Naive Bayes → Prediction`
+
+## 4. Key Features
+1. **End-to-End GUI**: User can paste any review and get instant sentiment prediction. No coding needed.
+2. **Error Handling**: Warns if input is empty using `messagebox`. Checks if file exists with `os.path.exists`.
+3. **Reproducible**: `random_state=42` ensures same train/test split every run.
+4. **Modular**: Sklearn `Pipeline` makes it easy to swap `MultinomialNB` with `LogisticRegression` or `SVM` later.
+
+## 5. How to Run
+```bash
+# 1. Install dependencies
+pip install pandas scikit-learn
+
+# 2. Update file_path in code to your CSV location
+# 3. Run the app
+python sentiment_analyzer.pyimport os
 
 file_path = r"C:\Users\Subhra\OneDrive\Desktop\python opencv\movie_reviews.csv"
 print(os.path.exists(file_path))  # Should print: True
