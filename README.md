@@ -32,11 +32,9 @@ Movie production houses and streaming platforms like Netflix, Stan, and Disney+ 
 
 ## 5. How to Run
 ```bash
-# 1. Install dependencies
+
 pip install pandas scikit-learn
 
-# 2. Update file_path in code to your CSV location
-# 3. Run the app
 python sentiment_analyzer.pyimport os
 
 file_path = r"C:\Users\Subhra\OneDrive\Desktop\python opencv\movie_reviews.csv"
