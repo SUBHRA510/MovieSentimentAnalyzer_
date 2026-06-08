@@ -1,20 +1,57 @@
+import os
+
+file_path = r"C:\Users\Subhra\OneDrive\Desktop\python opencv\movie_reviews.csv"
+print(os.path.exists(file_path))  # Should print: True
 
 
-Movie Sentiment Analyzer
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from tkinter import Tk, Label, Text, Button, END, messagebox
 
-Problem Statement
+file_path = r"C:/Users/Subhra/OneDrive/Desktop/python opencv/movie_reviews.csv"
+data = pd.read_csv(file_path, encoding='utf-8', on_bad_lines='warn')
 
-Analyzing movie reviews to determine sentiment can be a time-consuming task. This project aims to develop a machine learning model that can accurately classify movie reviews as positive or negative,
-enabling users to quickly understand public opinion.
+X = data['review']
+y = data['sentiment']
 
-Insights
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-- Sentiment Analysis: Our model uses natural language processing (NLP) techniques to analyze movie reviews and predict sentiment.
-- Accurate Predictions: By leveraging machine learning algorithms, our model achieves high accuracy in sentiment prediction.
-- User-Friendly Interface: A simple and intuitive interface allows users to input reviews and receive instant sentiment analysis.
+model = Pipeline([
+    ('vect', CountVectorizer()),
+    ('tfidf', TfidfTransformer()),
+    ('clf', MultinomialNB()),
+])
 
-Conclusion
+model.fit(X_train, y_train)
 
-This Movie Sentiment Analyzer project demonstrates the power of machine learning in analyzing and understanding human sentiment.
-By providing accurate sentiment analysis, this project can help movie enthusiasts, critics, and industry professionals gain valuable insights into public opinion. 
-Future work can include expanding the model to analyze sentiment in other domains.
+def predict_sentiment():
+    review = review_text.get("1.0", END).strip()
+    if not review:
+        messagebox.showwarning("Input Error", "Please enter a movie review.")
+        return
+    prediction = model.predict([review])[0]
+    result_label.config(text=f"Predicted Sentiment: {prediction}")
+
+
+root = Tk()
+root.title("Movie Review Sentiment Analysis")
+root.geometry("600x400")
+
+
+Label(root, text="Enter your movie review:", font=("Helvetica", 14)).pack(pady=10)
+review_text = Text(root, height=8, width=70, font=("Helvetica", 12))
+review_text.pack(pady=10)
+
+predict_button = Button(root, text="Analyze Sentiment", font=("Helvetica", 12, "bold"), command=predict_sentiment)
+predict_button.pack(pady=10)
+
+
+result_label = Label(root, text="", font=("Helvetica", 14, "bold"), fg="blue")
+result_label.pack(pady=10)
+
+root.mainloop()
+
+
